@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-public class DiaryEntry
+public class JournalEntry
 {
     public string Prompt { get; set; }
     public string Response { get; set; }
     public DateTime Date { get; set; }
 }
 
-public class Diary
+public class Journal
 {
-    private List<DiaryEntry> entries;
+    private List<JournalEntry> entries;
 
-    public Diary()
+    public Journal()
     {
-        entries = new List<DiaryEntry>();
+        entries = new List<JournalEntry>();
     }
 
     public void WriteNewEntry()
@@ -39,10 +39,10 @@ public class Diary
         Console.WriteLine($"Prompt: {prompt}");
         Console.Write("Response: ");
         string response = Console.ReadLine();
-        entries.Add(new DiaryEntry { Prompt = prompt, Response = response, Date = DateTime.Now });
+        entries.Add(new JournalEntry { Prompt = prompt, Response = response, Date = DateTime.Now });
     }
 
-    public void DisplayDiary()
+    public void DisplayJournal()
     {
         foreach (var entry in entries)
         {
@@ -53,7 +53,7 @@ public class Diary
         }
     }
 
-    public void SaveDiary(string fileName)
+    public void SaveJournal(string fileName)
     {
         if (Path.GetExtension(fileName).ToLower() == ".csv")
             SaveAsCSV(fileName);
@@ -73,15 +73,15 @@ public class Diary
                     writer.WriteLine($"{entry.Date.ToShortDateString()},\"{entry.Prompt}\",\"{entry.Response}\"");
                 }
             }
-            Console.WriteLine("Diary saved successfully in CSV format!");
+            Console.WriteLine("Journal saved successfully in CSV format!");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred while saving the diary: {ex.Message}");
+            Console.WriteLine($"An error occurred while saving the Journal: {ex.Message}");
         }
     }
 
-    public void LoadDiary(string fileName)
+    public void LoadJournal(string fileName)
     {
         entries.Clear();
         try
@@ -95,10 +95,10 @@ public class Diary
                     DateTime date = DateTime.Parse(parts[0].Trim());
                     string prompt = parts[1].Trim().Trim('"');
                     string response = parts[2].Trim().Trim('"');
-                    entries.Add(new DiaryEntry { Prompt = prompt, Response = response, Date = date });
+                    entries.Add(new JournalEntry { Prompt = prompt, Response = response, Date = date });
                 }
             }
-            Console.WriteLine("Diary loaded successfully!");
+            Console.WriteLine("Journal loaded successfully!");
         }
         catch (FileNotFoundException)
         {
@@ -106,7 +106,7 @@ public class Diary
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred while loading the diary: {ex.Message}");
+            Console.WriteLine($"An error occurred while loading the Journal: {ex.Message}");
         }
     }
 }
@@ -115,15 +115,15 @@ public class Program
 {
     static void Main(string[] args)
     {
-        Diary diary = new Diary();
+        Journal Journal = new Journal();
 
         while (true)
         {
             Console.WriteLine("Select an option:");
             Console.WriteLine("1. Write a new entry");
-            Console.WriteLine("2. Display the diary");
-            Console.WriteLine("3. Save the diary to a file");
-            Console.WriteLine("4. Load the diary from a file");
+            Console.WriteLine("2. Display the Journal");
+            Console.WriteLine("3. Save the Journal to a file");
+            Console.WriteLine("4. Load the Journal from a file");
             Console.WriteLine("5. Exit");
 
             int choice;
@@ -135,15 +135,15 @@ public class Program
             switch (choice)
             {
                 case 1:
-                    diary.WriteNewEntry();
+                    Journal.WriteNewEntry();
                     break;
                 case 2:
-                    diary.DisplayDiary();
+                    Journal.DisplayJournal();
                     break;
                 case 3:
                     Console.Write("Enter the file name to save to: ");
                     string saveFileName = Console.ReadLine();
-                    diary.SaveDiary(saveFileName);
+                    Journal.SaveJournal(saveFileName);
                     break;
                 case 4:
                     string loadFileName;
@@ -151,7 +151,7 @@ public class Program
                     {
                         Console.Write("Enter the file name to load from: ");
                         loadFileName = Console.ReadLine();
-                        diary.LoadDiary(loadFileName);
+                        Journal.LoadJournal(loadFileName);
                     } while (!File.Exists(loadFileName));
                     break;
                 case 5:
