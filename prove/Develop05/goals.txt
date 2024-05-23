@@ -1,0 +1,4 @@
+0
+SimpleGoal:futebol,jogar futebol,10,False
+EternalGoal:igreja,ir a igreja ,30
+CheckListGoal:tomar banho,tomar banho molhado,10,3,50,0
